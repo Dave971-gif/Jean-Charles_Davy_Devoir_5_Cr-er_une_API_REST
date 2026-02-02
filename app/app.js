@@ -1,48 +1,64 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+require('dotenv').config();
+const express = require('express');
+const path = require('path');
+const app = express();
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const mongoose = require('mongoose');
 
-var app = express();
+// On récupère l'URL depuis le fichier .env
+const dbPath = process.env.MONGO_URL;
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+mongoose.connect(dbPath)
+  .then(() => console.log('✅ Connexion à MongoDB réussie !'))
+  .catch((err) => console.log('❌ Connexion à MongoDB échouée :', err));
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
-// Indique à Express où sont les fichiers HTML/EJS
+// 1. Configuration du moteur de rendu (EJS)
+app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Indique à Express d'utiliser EJS pour transformer tes fichiers
-app.set('view engine', 'ejs'); 
+// 2. Middlewares de base
+app.use(express.json()); // Pour lire le JSON envoyé au serveur
+app.use('/images', express.static(path.join(__dirname, 'images'))); // Pour rendre les images accessibles
 
-// ... reste du code ...
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+// 3. Première route de test
+app.get('/', (req, res) => {
+    res.render('index', { message: "Super ! Le nouveau serveur fonctionne." });
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+// 4. Lancement du serveur
+const PORT = 3000;
+app.listen(PORT, () => {
+    console.log(`✅ Serveur prêt sur : http://localhost:${PORT}`);
 });
 
-module.exports = app;
+
+// 5. Connexion à MongoDB avec Mongoose
+
+
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = "mongodb+srv://davejc971_db_user:MonMDP971@cluster0.fldcrax.mongodb.net/?appName=Cluster0";
+
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+
+async function run() {
+  try {
+    // Connect the client to the server	(optional starting in v4.7)
+    await client.connect();
+    // Send a ping to confirm a successful connection
+    await client.db("admin").command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+run().catch(console.dir);
+
+// 6. Routes pour gérer les images (CRUD) à ajouter ici
