@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Tableau de Bord - Catways</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <h1>Gestion des Catways</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Numéro</th>
+                <th>Type</th>
+                <th>État</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% catways.forEach(catway => { %>
+                <tr>
+                    <td><%= catway.catwayNumber %></td>
+                    <td><%= catway.catwayType %></td>
+                    <td><%= catway.catwayState %></td>
+                    <td><a href="/catways/<%= catway.catwayNumber %>">Détails</a></td>                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
+const userRoutes = require('./routes/userRoutes');
 const app = express();
 
 const mongoose = require('mongoose');
@@ -19,6 +20,7 @@ app.set('views', path.join(__dirname, 'views'));
 // 2. Middlewares de base
 app.use(express.json()); // Pour lire le JSON envoyé au serveur
 app.use('/images', express.static(path.join(__dirname, 'images'))); // Pour rendre les images accessibles
+app.use(express.urlencoded({ extended: true }));
 
 // 3. Route principale
 app.get('/', (req, res) => {
@@ -61,4 +63,51 @@ async function run() {
 }
 run().catch(console.dir);
 
-// 6. Routes pour gérer les images (CRUD) à ajouter ici
+// 6. Routes pour les Catways
+const catwayRoutes = require('./routes/catwayRoutes');
+app.use('/catways', catwayRoutes);
+app.use('/users', userRoutes);
+
+// 7. Gérer la connexion
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    // Ici on devrait vérifier l'utilisateur dans la base de données
+    // Pour tester le lien tout de suite, on fait une redirection directe :
+    
+    if (email && password) { 
+        res.redirect('/catways'); // Redirige l'utilisateur vers ton tableau
+    } else {
+        res.send('Identifiants manquants');
+    }
+});
+
+// 8. Route pour la connexion avec vérification basique
+const bcrypt = require('bcrypt');
+const User = require('./models/user');
+
+app.post('/login', async (req, res) => {
+    try {
+        // 1. On cherche l'utilisateur dans la base par son email
+        const user = await User.findOne({ email: req.body.email });
+
+        // 2. Si l'utilisateur n'existe pas
+        if (!user) {
+            return res.status(401).send('Utilisateur non trouvé');
+        }
+
+        // 3. On compare le mot de passe tapé avec le mot de passe crypté en base
+        const validPassword = await bcrypt.compare(req.body.password, user.password);
+
+        if (!validPassword) {
+            return res.status(401).send('Mot de passe incorrect');
+        }
+
+        // 4. Redirection vers le dashboard
+        res.redirect('/catways');
+
+    } catch (error) {
+        res.status(500).send('Erreur serveur : ' + error.message);
+    }
+});
+
