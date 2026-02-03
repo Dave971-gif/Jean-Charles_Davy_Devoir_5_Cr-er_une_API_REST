@@ -20,9 +20,9 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.json()); // Pour lire le JSON envoyé au serveur
 app.use('/images', express.static(path.join(__dirname, 'images'))); // Pour rendre les images accessibles
 
-// 3. Première route de test
+// 3. Route principale
 app.get('/', (req, res) => {
-    res.render('index', { message: "Super ! Le nouveau serveur fonctionne." });
+    res.render('index');
 });
 
 // 4. Lancement du serveur

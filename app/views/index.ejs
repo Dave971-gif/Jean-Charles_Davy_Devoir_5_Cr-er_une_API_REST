@@ -1,10 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Créer une API Rest</title>
+    <title>Capitainerie - Accueil</title>
 </head>
 <body>
-    <h1><%= message %></h1>
-    <p>On va maintenant pouvoir connecter MongoDB et gérer les images.</p>
+    <h1>Bienvenue à la Capitainerie</h1>
+    
+    <h2>Connexion</h2>
+    <form action="/login" method="POST">
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Mot de passe" required>
+        <button type="submit">Se connecter</button>
+    </form>
+
+    <hr>
+    <h2>Documentation de l'API</h2>
+    <p>Accédez à la liste des routes et fonctionnalités <a href="/docs">ici</a>.</p>
 </body>
-</html>                         
+</html>
