@@ -22,9 +22,13 @@ app.use(express.json()); // Pour lire le JSON envoyé au serveur
 app.use('/images', express.static(path.join(__dirname, 'images'))); // Pour rendre les images accessibles
 app.use(express.urlencoded({ extended: true }));
 
-// 3. Route principale
+// 3. Routes principale et secondaires
 app.get('/', (req, res) => {
     res.render('index');
+});
+
+app.get('/dashboard', (req, res) => {
+    res.render('dashboard'); 
 });
 
 // 4. Lancement du serveur

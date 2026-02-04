@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Créer un Agent - Capitainerie</title>
+</head>
+<body>
+    <h1>Ajouter un nouvel utilisateur</h1>
+    <form action="/users" method="POST">
+        <div>
+            <label>Nom d'utilisateur :</label>
+            <input type="text" name="username" required>
+        </div>
+        <div>
+            <label>Email :</label>
+            <input type="email" name="email" required>
+        </div>
+        <div>
+            <label>Mot de passe :</label>
+            <input type="password" name="password" required>
+        </div>
+        <button type="submit">Enregistrer l'utilisateur</button>
+    </form>
+    <br>
+    <a href="/login">Retour au tableau de bord</a>
+</body>
+</html>

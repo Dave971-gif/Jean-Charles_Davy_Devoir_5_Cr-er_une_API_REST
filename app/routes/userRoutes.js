@@ -3,6 +3,12 @@ const router = express.Router();
 const User = require('../models/user.js');
 const bcrypt = require('bcrypt');
 
+
+// Route pour afficher le formulaire
+router.get('/add', (req, res) => {
+    res.render('user-create'); 
+});
+
 // Route UNIQUE pour créer un utilisateur
 router.post('/', async (req, res) => {
     try {
@@ -17,11 +23,16 @@ router.post('/', async (req, res) => {
         });
 
         await user.save();
+        res.redirect('/login');
         res.status(201).send("Utilisateur créé avec succès !");
+
     } catch (error) {
-        console.log("Erreur détaillée :", error.message);
+    if (error.code === 11000) {
+        res.status(400).send("Erreur : Cet email est déjà utilisé par un autre agent.");
+    } else {
         res.status(400).send({ error: error.message });
     }
+}
 });
 
 module.exports = router;
