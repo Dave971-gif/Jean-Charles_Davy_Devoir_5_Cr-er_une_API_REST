@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user.js');
 const bcrypt = require('bcrypt');
+const userController = require('../controllers/userController');
 
 
-// Route pour afficher le formulaire
+// Route pour afficher le formulaire et celle pour afficher la page de connexion
 router.get('/add', (req, res) => {
     res.render('user-create'); 
 });
@@ -12,7 +13,7 @@ router.get('/add', (req, res) => {
 // Route UNIQUE pour créer un utilisateur
 router.post('/', async (req, res) => {
     try {
-        console.log("Données reçues de Postman :", req.body); // Vérification dans le terminal
+        console.log("Données reçues de Postman :", req.body); 
 
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         
@@ -23,16 +24,21 @@ router.post('/', async (req, res) => {
         });
 
         await user.save();
-        res.redirect('/login');
+        res.redirect('/');
         res.status(201).send("Utilisateur créé avec succès !");
 
     } catch (error) {
-    if (error.code === 11000) {
-        res.status(400).send("Erreur : Cet email est déjà utilisé par un autre agent.");
-    } else {
-        res.status(400).send({ error: error.message });
+        const existingUser = await User.findOne({ email: req.body.email });
+        if (existingUser) {
+            return res.status(400).send("Cet email est déjà utilisé par un autre agent.");
+        } else {
+            res.status(400).send({ error: error.message });
+        }
     }
-}
 });
 
 module.exports = router;
+
+
+// Route de suppression d'un utilisateur
+router.get('/delete/:id', userController.deleteUser);

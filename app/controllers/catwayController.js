@@ -1,13 +1,22 @@
 const Catway = require('../models/Catway');
+const User = require('../models/user');
 
 exports.getAllCatways = async (req, res) => {
     try {
-        // On récupère tous les catways dans la base
+        // 1. On récupère tous les catways
         const catways = await Catway.find();
-        // On envoie ces données à une vue EJS nommée 'dashboard'
-        res.render('dashboard', { catways });
+        
+        // 2. On récupère TOUS les utilisateurs de la capitainerie
+        const users = await User.find();
+
+        // 3. On envoie les deux variables à la vue 'dashboard
+        res.render('dashboard', { 
+            catways: catways, 
+            users: users 
+        });
+
     } catch (error) {
-        res.status(500).send("Erreur lors de la récupération des catways");
+        res.status(500).send("Erreur lors de la récupération des données : " + error.message);
     }
 };
 

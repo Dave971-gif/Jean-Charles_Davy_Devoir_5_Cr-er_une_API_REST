@@ -4,6 +4,6 @@ const catwayController = require('../controllers/catwayController');
 
 // La route de Catway
 router.get('/', catwayController.getAllCatways);
-router.get('/:id', catwayController.getCatwayById); // Route pour obtenir un catway par son ID
+router.get('/:id', catwayController.getCatwayById); 
 
 module.exports = router;

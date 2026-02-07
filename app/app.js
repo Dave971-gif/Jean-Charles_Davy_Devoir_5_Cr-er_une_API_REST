@@ -27,9 +27,6 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
-app.get('/dashboard', (req, res) => {
-    res.render('dashboard'); 
-});
 
 // 4. Lancement du serveur
 const PORT = 3000;
@@ -72,26 +69,14 @@ const catwayRoutes = require('./routes/catwayRoutes');
 app.use('/catways', catwayRoutes);
 app.use('/users', userRoutes);
 
-// 7. Gérer la connexion
-app.post('/login', async (req, res) => {
-    const { email, password } = req.body;
-
-    // Ici on devrait vérifier l'utilisateur dans la base de données
-    // Pour tester le lien tout de suite, on fait une redirection directe :
-    
-    if (email && password) { 
-        res.redirect('/catways'); // Redirige l'utilisateur vers ton tableau
-    } else {
-        res.send('Identifiants manquants');
-    }
-});
-
-// 8. Route pour la connexion avec vérification basique
+// 7. Route pour la connexion avec vérification basique
 const bcrypt = require('bcrypt');
 const User = require('./models/user');
 
 app.post('/login', async (req, res) => {
     try {
+        console.log("Tentative de connexion avec :", req.body.email);
+        
         // 1. On cherche l'utilisateur dans la base par son email
         const user = await User.findOne({ email: req.body.email });
 
@@ -115,3 +100,8 @@ app.post('/login', async (req, res) => {
     }
 });
 
+// 8. Déconnexion 
+app.get('/logout', (req, res) => {
+    
+    res.redirect('/');
+});

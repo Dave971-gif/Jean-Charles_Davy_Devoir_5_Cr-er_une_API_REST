@@ -22,13 +22,26 @@
                     <td><%= catway.catwayNumber %></td>
                     <td><%= catway.catwayType %></td>
                     <td><%= catway.catwayState %></td>
-                    <td><a href="/catways/<%= catway.catwayNumber %>">Détails</a></td>                </tr>
-            <% }); %>
+                    <td><a href="/catways/<%= catway.catwayNumber %>">Détails</a></td>
+                </tr>
+            <% }) %>
         </tbody>
     </table>
     <div class="admin-actions">
         <h2>Gestion des accès</h2>
         <a href="/users/add" class="button">Créer un nouvel utilisateur</a>
+    </div>
+    <div>
+        <h2>Les utilisateurs inscrits</h2>
+        <% if (typeof users !== 'undefined' && users.length > 0) { %>
+            <% users.forEach(user => { %>
+                <p><%= user.username %> - <%= user.email %></p>
+                <a href="/users/delete/<%= user._id %>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet agent ?')" class="delete-user">Supprimer</a>
+            <% }) %>
+        <% } else { %>
+            <p>Aucun agent enregistré.</p>
+        <% } %>  
+        <a href="/logout" class="logout-btn">Se déconnecter</a>
     </div>
 </body>
 </html>
