@@ -4,6 +4,7 @@ const path = require('path');
 const catwayRoutes = require('./routes/catwayRoutes');
 const userRoutes = require('./routes/userRoutes');
 const reservationRoutes = require('./routes/reservationRoutes');
+const userController = require('./controllers/userController');
 const app = express();
 
 const mongoose = require('mongoose');
@@ -24,7 +25,7 @@ app.use(express.json()); // Pour lire le JSON envoyé au serveur
 app.use('/images', express.static(path.join(__dirname, 'images'))); // Pour rendre les images accessibles
 app.use(express.urlencoded({ extended: true }));
 
-// 3. Routes principale et secondaires
+// 3. Route principale 
 app.get('/', (req, res) => {
     res.render('index');
 });
@@ -107,3 +108,14 @@ app.get('/logout', (req, res) => {
     
     res.redirect('/');
 });
+
+// 9. Suppression d'une réservation
+app.use('/catways/:catwayNumber/reservations', reservationRoutes);
+
+// 10. Création d'un compte utilisateur personnel 
+app.get('/register', (req, res) => {
+    res.render('user-register'); 
+});
+
+console.log("Contenu de userController :", userController);
+app.post('/users', userController.signup);

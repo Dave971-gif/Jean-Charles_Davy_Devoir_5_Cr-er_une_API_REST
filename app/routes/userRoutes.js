@@ -5,9 +5,13 @@ const bcrypt = require('bcrypt');
 const userController = require('../controllers/userController');
 
 
-// Route pour afficher le formulaire et celle pour afficher la page de connexion
+// Route pour afficher le formulaire de création et d'ajout d'un utilisateur 
 router.get('/add', (req, res) => {
     res.render('user-create'); 
+});
+
+router.get('/register', async (req, res) => {
+    res.render('user-register');
 });
 
 // Route UNIQUE pour créer un utilisateur
@@ -37,8 +41,8 @@ router.post('/', async (req, res) => {
     }
 });
 
-module.exports = router;
-
-
 // Route de suppression d'un utilisateur
 router.get('/delete/:id', userController.deleteUser);
+
+module.exports = router;
+

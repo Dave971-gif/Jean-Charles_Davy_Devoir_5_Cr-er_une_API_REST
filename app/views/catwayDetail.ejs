@@ -22,8 +22,14 @@
     <h2>Réservations confirmées</h2>
     <ul>
         <% reservations.forEach(reservation => { %>
-            <li><%= reservation.clientName %> - <%= reservation.boatName %> du <%= new Date(reservation.startDate).toLocaleDateString() %> au <%= new Date(reservation.endDate).toLocaleDateString() %></li>
+            <li><%= reservation.clientName %> - <%= reservation.boatName %> du <%= new Date(reservation.startDate).toLocaleDateString() %> au <%= new Date(reservation.endDate).toLocaleDateString() %>
+                <br>
+                <a href="/catways/<%= catway.catwayNumber %>/reservations/<%= reservation._id %>/delete" 
+                   onclick="return confirm('Supprimer cette réservation ?')">[Supprimer]</a>
+            </li>
         <% }) %>
+    </ul>
+    
     <a href="/catways">Retour au tableau de bord</a>
 </body>
 </html>

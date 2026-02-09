@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Créer un nouveau compte utilisateur - Capitainerie</title>
+</head>
+<body>
+    <h1>Je crée mon compte utilisateur</h1>
+    <form action="/users" method="POST">
+        <div>
+            <label>Nom d'utilisateur :</label>
+            <input type="text" name="username" required>
+        </div>
+        <div>
+            <label>Email :</label>
+            <input type="email" name="email" required>
+        </div>
+        <div>
+            <label>Mot de passe :</label>
+            <input type="password" name="password" required>
+        </div>
+        <button type="submit">M'enregistrer</button>
+    </form>
+    <br>
+    <a href="/">Retour à la page de connexion</a>
+</body>
+</html>

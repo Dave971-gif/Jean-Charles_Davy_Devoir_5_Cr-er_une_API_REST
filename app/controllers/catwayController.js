@@ -21,6 +21,7 @@ exports.getAllCatways = async (req, res) => {
     }
 };
 
+
 exports.getCatwayById = async (req, res) => {
     try {
         console.log("Valeur reçue dans l'URL :", req.params.id);
