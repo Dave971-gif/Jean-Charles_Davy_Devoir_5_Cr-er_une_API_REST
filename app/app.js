@@ -105,7 +105,7 @@ app.post('/login', async (req, res) => {
 
 // 8. Déconnexion 
 app.get('/logout', (req, res) => {
-    
+    res.clearCookie('token');
     res.redirect('/');
 });
 
@@ -119,3 +119,7 @@ app.get('/register', (req, res) => {
 
 console.log("Contenu de userController :", userController);
 app.post('/users', userController.signup);
+
+//11. Ajout des cookies
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
