@@ -1,7 +1,9 @@
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
+const catwayRoutes = require('./routes/catwayRoutes');
 const userRoutes = require('./routes/userRoutes');
+const reservationRoutes = require('./routes/reservationRoutes');
 const app = express();
 
 const mongoose = require('mongoose');
@@ -64,10 +66,10 @@ async function run() {
 }
 run().catch(console.dir);
 
-// 6. Routes pour les Catways
-const catwayRoutes = require('./routes/catwayRoutes');
+// 6. Routes pour les Catways et pour les Réservations
 app.use('/catways', catwayRoutes);
 app.use('/users', userRoutes);
+app.use('/catways/:catwayNumber/reservations', reservationRoutes);
 
 // 7. Route pour la connexion avec vérification basique
 const bcrypt = require('bcrypt');

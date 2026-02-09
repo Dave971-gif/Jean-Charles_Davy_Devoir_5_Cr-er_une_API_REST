@@ -15,7 +15,7 @@ module.exports = (req, res, next) => {
        // 4. On l'ajoute à l'objet requête pour que les autres routes y aient accès
        req.auth = { userId };
        
-       next(); // On passe au middleware ou à la route suivante
+       next(); 
    } catch(error) {
        res.status(401).json({ error: 'Requête non authentifiée !' });
    }

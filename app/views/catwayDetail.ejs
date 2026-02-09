@@ -8,8 +8,22 @@
 <body>
     <h1>Détails du Catway n° <%= catway.catwayNumber %></h1>
     <ul>
-        <li><strong>Type :</strong> <%= catway.catwayType %></li> <li><strong>État :</strong> <%= catway.catwayState %></li> </ul>
-
+        <li><strong>Type :</strong> <%= catway.catwayType %></li> <li><strong>État :</strong> <%= catway.catwayState %></li> 
+    </ul>
+    <form action="/catways/<%= catway.catwayNumber %>/reservations" method="POST">
+        <input type="text" name="clientName" placeholder="Nom du client" required>
+        <input type="text" name="boatName" placeholder="Nom du bateau" required>
+        <h2>Start date</h2>
+        <input type="date" name="startDate" required>
+        <h2>End date</h2>
+        <input type="date" name="endDate" required>
+        <button type="submit">Réserver cet emplacement</button>
+    </form>
+    <h2>Réservations confirmées</h2>
+    <ul>
+        <% reservations.forEach(reservation => { %>
+            <li><%= reservation.clientName %> - <%= reservation.boatName %> du <%= new Date(reservation.startDate).toLocaleDateString() %> au <%= new Date(reservation.endDate).toLocaleDateString() %></li>
+        <% }) %>
     <a href="/catways">Retour au tableau de bord</a>
 </body>
 </html>
