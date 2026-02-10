@@ -8,8 +8,13 @@
 <body>
     <h1>Détails du Catway n° <%= catway.catwayNumber %></h1>
     <ul>
-        <li><strong>Type :</strong> <%= catway.catwayType %></li> <li><strong>État :</strong> <%= catway.catwayState %></li> 
+        <li><strong>Type :</strong> <%= catway.catwayType %></li> 
+        <li><strong>État :</strong> <%= catway.catwayState %></li> 
     </ul>
+    
+    <a href="/catways/<%= catway.catwayNumber %>/edit">[Modifier les détails du catway]</a>
+    <a href="/catways/<%= catway.catwayNumber %>/delete" onclick="return confirm('Supprimer ce catway ?')">[Supprimer le catway]</a>
+
     <form action="/catways/<%= catway.catwayNumber %>/reservations" method="POST">
         <input type="text" name="clientName" placeholder="Nom du client" required>
         <input type="text" name="boatName" placeholder="Nom du bateau" required>
@@ -17,6 +22,7 @@
         <input type="date" name="startDate" required>
         <h2>End date</h2>
         <input type="date" name="endDate" required>
+        <br>
         <button type="submit">Réserver cet emplacement</button>
     </form>
     <h2>Réservations confirmées</h2>

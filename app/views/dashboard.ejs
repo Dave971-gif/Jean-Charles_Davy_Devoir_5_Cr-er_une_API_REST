@@ -23,8 +23,11 @@
                     <td><%= catway.catwayType %></td>
                     <td><%= catway.catwayState %></td>
                     <td><a href="/catways/<%= catway.catwayNumber %>">Détails</a></td>
+                    <td><a href="/catways/<%= catway.catwayNumber %>/edit">[Modifier les détails du catway]</a></td>
+                    <td><a href="/catways/<%= catway.catwayNumber %>/delete" onclick="return confirm('Supprimer ce catway ?')">[Supprimer le catway]</a></td>
                 </tr>
             <% }) %>
+            <a href="/catways/add" class="button">[Ajouter un nouveau catway]</a>
         </tbody>
     </table>
     <div class="admin-actions">
@@ -35,12 +38,15 @@
         <h2>Les utilisateurs inscrits</h2>
         <% if (typeof users !== 'undefined' && users.length > 0) { %>
             <% users.forEach(user => { %>
-                <p><%= user.username %> - <%= user.email %></p>
-                <a href="/users/delete/<%= user._id %>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet agent ?')" class="delete-user">Supprimer</a>
+                <p>
+                    <%= user.username %> - <%= user.email %>
+                    <a href="/users/delete/<%= user._id %>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet agent ?')" class="delete-user">[Supprimer]</a>
+                </p>
             <% }) %>
         <% } else { %>
             <p>Aucun agent enregistré.</p>
-        <% } %>  
+        <% } %> 
+        <br> 
         <a href="/logout" class="logout-btn">Se déconnecter</a>
     </div>
 </body>

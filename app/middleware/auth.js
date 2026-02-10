@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
        const token = req.cookies.token || (req.headers.authorization && req.headers.authorization.split(' ')[1]);
        
        if (!token) {
-           return res.redirect('/login'); 
+           return res.redirect('/'); 
        }
 
        const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
@@ -18,6 +18,6 @@ module.exports = (req, res, next) => {
        next(); 
    } catch(error) {
        res.clearCookie('token');
-       res.redirect('/login');
+       res.redirect('/');
    }
 };
