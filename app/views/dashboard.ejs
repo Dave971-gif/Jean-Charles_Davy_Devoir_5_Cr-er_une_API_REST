@@ -34,6 +34,40 @@
                     <a href="/users" class="btn btn-primary">Liste des Utilisateurs</a>
                 </section>
             </div>
+            <div>
+                <h2>Réservations en cours</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Catway</th>
+                            <th>Client</th>
+                            <th>Bateau</th>
+                            <th>Dates</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (typeof reservations !== 'undefined' && reservations.length > 0) { %>
+                            <% reservations.forEach(resa => { %>
+                                <tr>
+                                    <td><strong><%= resa.catwayNumber %></strong></td>
+                                    <td><%= resa.clientName %></td>
+                                    <td><%= resa.boatName %></td>
+                                    <td><%= new Date(resa.startDate).toLocaleDateString() %> - <%= new Date(resa.endDate).toLocaleDateString() %></td>
+                                </tr>                        
+                            <% }) %>
+                        <% } else { %>
+                            <tr><td colspan="5">Aucune réservation trouvée.</td></tr>
+                        <% } %>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>
+                                <a href="/reservations" class="btn btn-secondary">Voir toutes les réservations</a>
+                            </td>
+                        </tr>    
+                    </tfoot>
+                </table>
+            </div>
         <% } else { %>
             <div class="alert-error">
                 <h1>Accès refusé</h1>

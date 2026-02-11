@@ -10,6 +10,7 @@ const userRoutes = require('./routes/userRoutes');
 const reservationRoutes = require('./routes/reservationRoutes');
 const userController = require('./controllers/userController');
 const User = require('./models/User');
+const Reservation = require('./models/Reservation');
 const jwt = require('jsonwebtoken');
 const auth = require('./middleware/auth');
 
@@ -37,7 +38,7 @@ app.use(cookieParser());
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// --- AFFICHAE DE LA PERSONNE CONNECTÉE DANS TOUTES LES VUES ---
+// --- AFFICHAGE DE LA PERSONNE CONNECTÉE ---
 app.use(async (req, res, next) => {
     const token = req.cookies.token;
     if (token) {
@@ -62,8 +63,19 @@ app.get('/', (req, res) =>
     res.render('index')
 ); 
 
-app.get('/dashboard', auth, (req, res) => {
-    res.render('dashboard'); 
+app.get('/dashboard', auth, async (req, res) => {
+    try {
+        // 1. On récupère les réservations en base de données
+        const reservations = await Reservation.find().limit(5); // On limite aux 5 dernières
+
+        res.render('dashboard', { 
+            reservations: reservations 
+        });
+        
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Erreur lors du chargement du dashboard");
+    }
 });
 
 app.get('/register', (req, res) => 
