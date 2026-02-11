@@ -1,24 +1,24 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User.js');
+const User = require('../models/User'); 
 const bcrypt = require('bcrypt');
 const userController = require('../controllers/userController');
 
+// Route pour lister tous les utilisateurs
+router.get('/', userController.getAllUsers);
 
-// Route pour afficher le formulaire de création et d'ajout d'un utilisateur 
+// Route pour afficher le formulaire de création (Vue dans le dossier users)
 router.get('/add', (req, res) => {
-    res.render('user-create'); 
+    res.render('users/user-create'); 
 });
 
-router.get('/register', async (req, res) => {
-    res.render('user-register');
+// Route pour TRAITER le formulaire de création (Appelée par le formulaire POST)
+router.get('/register', (req, res) => {
+    res.render('users/user-register'); 
 });
 
-// Route UNIQUE pour créer un utilisateur
 router.post('/', async (req, res) => {
     try {
-        console.log("Données reçues de Postman :", req.body); 
-
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         
         const user = new User({
@@ -28,21 +28,19 @@ router.post('/', async (req, res) => {
         });
 
         await user.save();
-        res.redirect('/');
-        res.status(201).send("Utilisateur créé avec succès !");
+        
+        // On redirige vers la liste des utilisateurs pour voir le nouveau créé
+        res.redirect('/users'); 
 
     } catch (error) {
         const existingUser = await User.findOne({ email: req.body.email });
         if (existingUser) {
             return res.status(400).send("Cet email est déjà utilisé par un autre agent.");
-        } else {
-            res.status(400).send({ error: error.message });
         }
+        res.status(400).send({ error: error.message });
     }
 });
 
-// Route de suppression d'un utilisateur
 router.get('/delete/:id', userController.deleteUser);
 
 module.exports = router;
-

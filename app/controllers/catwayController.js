@@ -2,7 +2,14 @@ const Catway = require('../models/Catway');
 const User = require('../models/User');
 const Reservation = require('../models/Reservation');
 
-// On affiche tous les catways et tous les utilisateurs dans le dashboard
+/**
+ * @description Récupère les détails d'un catway spécifique et ses réservations.
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Promise<void>}
+ */
+
+// On affiche tous les catways et tous les utilisateurs dans le catway et user ejs
 exports.getAllCatways = async (req, res) => {
     try {
         // 1. On récupère tous les catways
@@ -11,10 +18,11 @@ exports.getAllCatways = async (req, res) => {
         // 2. On récupère TOUS les utilisateurs de la capitainerie
         const users = await User.find();
 
-        // 3. On envoie les deux variables à la vue dashboard
-        res.render('dashboard', { 
+        // 3. On envoie les deux variables à la vue catways
+        res.render('catways', { 
             catways: catways, 
-            users: users 
+            users: users,
+            title: "Gestion des Catways"
         });
 
     } catch (error) {
@@ -22,32 +30,19 @@ exports.getAllCatways = async (req, res) => {
     }
 };
 
-// On affiche les détails d'un catway + ses réservations associées
+// On cherche et programme une réservation liée à un catway spécifique
 exports.getCatwayById = async (req, res) => {
     try {
-        console.log("Valeur reçue dans l'URL :", req.params.id);
         const id = parseInt(req.params.id);
-
-        if (isNaN(id)) {
-            return res.status(400).send("Le numéro du catway doit être un chiffre valide.");
-        }
-
-        // 1. On cherche le catway
         const catway = await Catway.findOne({ catwayNumber: id });
-        
-        if (!catway) {
-            return res.status(404).send("Catway non trouvé");
-        }
-
-        // 2. On cherche toutes les réservations liées à ce numéro de catway
         const reservations = await Reservation.find({ catwayNumber: id });
 
-        // 3. On envoie les DEUX variables au fichier EJS
-        res.render('catwayDetail', { 
+        if (!catway) return res.status(404).send("Catway non trouvé");
+
+        res.render('catways/catwayDetail', { 
             catway: catway, 
             reservations: reservations 
         });
-
     } catch (error) {
         res.status(500).send("Erreur : " + error.message);
     }
@@ -62,7 +57,7 @@ exports.renderEditCatwayForm = async (req, res) => {
         if (!catway) {
             return res.status(404).send("Catway non trouvé");
         }
-        res.render('catway-edit', { catway: catway });
+        res.render('catways/catway-edit', { catway: catway });
     } catch (error) {
         res.status(500).send("Erreur : " + error.message);
     }
@@ -104,7 +99,7 @@ exports.deleteCatway = async (req, res) => {
 
 //On affiche le formulaire d'ajout d'un catway
 exports.renderAddCatwayForm = (req, res) => {
-    res.render('catway-add');
+    res.render('catways/catway-add');
 };
 
 //On traite l'ajout d'un catway

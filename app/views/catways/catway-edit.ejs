@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/style/base.css">
     <title>Modifier un catway</title>
 </head>
 <body>
-    <header>
-        <h1>Modifier un catway</h1>
-    </header>
+    <%- include('../partials/header') %>
+    
     <main>
+        <h1>Modifier un catway</h1>
         <form action="/catways/<%= catway.catwayNumber %>/edit" method="POST">
             <input type="text" name="catwayState" placeholder="État du catway" value="<%= catway.catwayState %>" required>
             <br>
@@ -17,8 +18,7 @@
         </form>
         <a href="/catways/<%= catway.catwayNumber %>">Retour aux détails du catway</a>
     </main>
-    <footer>
-        
-    </footer>
+
+    <%- include('../partials/footer') %>
 </body>
 </html>

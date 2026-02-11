@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <%- include('partials/header') %>
+
+    <main class="content-container">
+        <h1>Gestion des Réservations</h1>
+
+        <section class="add-reservation-box">
+            <h2>Nouvelle Réservation</h2>
+            <form action="/reservations/add" method="POST" class="horizontal-form">
+                <input type="number" name="catwayNumber" placeholder="N° Catway" required>
+
+                <input type="text" name="clientName" placeholder="Nom du client" required>
+                <input type="text" name="boatName" placeholder="Nom du bateau" required>
+
+                <div class="date-group">
+                    <label>Du:</label>
+                    <input type="date" name="startDate" required>
+                    <label>Au:</label>
+                    <input type="date" name="endDate" required>
+                </div>
+
+                <button type="submit" class="btn-success">Réserver</button>
+            </form>
+        </section>
+
+        <hr>
+
+        <h2>Réservations en cours</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Catway</th>
+                    <th>Client</th>
+                    <th>Bateau</th>
+                    <th>Dates</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (reservations && reservations.length > 0) { %>
+                    <% reservations.forEach(resa => { %>
+                        <tr>
+                            <td><strong><%= resa.catwayNumber %></strong></td>
+                            <td><%= resa.clientName %></td>
+                            <td><%= resa.boatName %></td>
+                            <td><%= new Date(resa.startDate).toLocaleDateString() %> - <%= new Date(resa.endDate).toLocaleDateString() %></td>
+                            <td>
+                                <a href="/reservations/delete/<%= resa._id %>" class="btn-danger" onclick="return confirm('Supprimer ?')">Supprimer</a>
+                            </td>
+                        </tr>
+                    <% }) %>
+                <% } else { %>
+                    <tr><td colspan="5">Aucune réservation trouvée.</td></tr>
+                <% } %>
+            </tbody>
+        </table>
+
+        <a href="/dashboard" class="btn-secondary">Retour au dashboard</a>
+    </main>
+
+    <%- include('partials/footer') %>
+</body>
+</html>

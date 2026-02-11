@@ -2,6 +2,26 @@ const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 
+/**
+ * @description Récupère les détails d'un catway spécifique et ses réservations.
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Promise<void>}
+ */
+
+exports.getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find().select('-password');
+
+        res.render('users', {
+            users: users,
+            title: "Gestion des Utilisateurs"
+        });
+    } catch (error) {
+        res.status(500).send("Erreur lors de la récupération des utilisateurs : " + error.message);
+    }
+};
+
 // INSCRIPTION
 exports.signup = async (req, res, next) => {
     try {
@@ -16,7 +36,7 @@ exports.signup = async (req, res, next) => {
 
         // On attend que la sauvegarde soit finie
         await user.save();
-        res.redirect('/catways');
+        res.redirect('/dashboard');
         res.status(201).json({ message: 'Utilisateur créé !' });
         
     } catch (error) {
@@ -51,7 +71,7 @@ exports.login = async (req, res) => {
         res.cookie('token', token, { httpOnly: true, secure: false });
 
         // 5. On redirige vers le dashboard
-        res.redirect('/catways');
+        res.redirect('/dashboard');
 
     } catch (error) {
         res.status(500).send(error.message);
@@ -62,7 +82,7 @@ exports.login = async (req, res) => {
 exports.deleteUser = async (req, res) => {
     try {
         await User.findByIdAndDelete(req.params.id);
-        res.redirect('/catways'); 
+        res.redirect('/dashboard'); 
     } catch (error) {
         res.status(500).send("Erreur");
     }

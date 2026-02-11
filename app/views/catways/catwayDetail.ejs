@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/style/base.css">
+    <title>Détails du Catway <%= catway.catwayNumber %></title>
+</head>
+<body>
+    <%- include('../partials/header') %>
+    
+    <main>
+        <h1>Détails du Catway n° <%= catway.catwayNumber %></h1>
+        <ul>
+            <li><strong>Type :</strong> <%= catway.catwayType %></li> 
+            <li><strong>État :</strong> <%= catway.catwayState %></li> 
+        </ul>
+        
+        <a href="/catways/<%= catway.catwayNumber %>/edit">[Modifier les détails du catway]</a>
+        <a href="/catways/<%= catway.catwayNumber %>/delete" onclick="return confirm('Supprimer le catway n° <%= catway.catwayNumber %> ?')">[Supprimer le catway]</a>
+
+        <a href="/catways">Retour au tableau de bord des catways</a>
+    </main>
+    
+    <%- include('../partials/footer') %>
+</body>
+</html>

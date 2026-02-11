@@ -9,6 +9,8 @@ const catwayRoutes = require('./routes/catwayRoutes');
 const userRoutes = require('./routes/userRoutes');
 const reservationRoutes = require('./routes/reservationRoutes');
 const userController = require('./controllers/userController');
+const User = require('./models/User');
+const jwt = require('jsonwebtoken');
 const auth = require('./middleware/auth');
 
 const app = express();
@@ -33,14 +35,39 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser()); 
 app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use(express.static(path.join(__dirname, 'public')));
+
+// --- AFFICHAE DE LA PERSONNE CONNECTÉE DANS TOUTES LES VUES ---
+app.use(async (req, res, next) => {
+    const token = req.cookies.token;
+    if (token) {
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            // On récupère l'utilisateur précis qui possède ce token
+            const currentUser = await User.findById(decoded.userId);
+
+            res.locals.user = currentUser; 
+
+        } catch (err) {
+            res.locals.user = null;
+        }
+    } else {
+        res.locals.user = null;
+    }
+    next();
+});
 
 // --- ROUTES PUBLIQUES ---
 app.get('/', (req, res) => 
     res.render('index')
 ); 
 
+app.get('/dashboard', auth, (req, res) => {
+    res.render('dashboard'); 
+});
+
 app.get('/register', (req, res) => 
-    res.render('user-register')
+    res.render('users/user-register')
 );
 
 app.post('/login', userController.login); 
@@ -49,7 +76,7 @@ app.post('/users', userController.signup);
 // --- ROUTES PROTÉGÉES ---
 // Le middleware "auth" s'assure que le cookie est présent et valide
 app.use('/catways', auth, catwayRoutes);
-app.use('/catways/:catwayNumber/reservations', auth, reservationRoutes);
+app.use('/reservations', auth, reservationRoutes);
 app.use('/users', auth, userRoutes);
 
 // --- LOGOUT ---

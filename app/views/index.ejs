@@ -2,13 +2,15 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/style/base.css">
     <title>Connexion - Capitainerie</title>
 </head>
 <body>
-    <header>
-        <h1>Connexion à l'espace Capitainerie</h1>
-    </header>
+    <%- include('partials/header') %>
+
     <main>
+        <h1>Connexion à l'espace Capitainerie</h1>
         <form action="/login" method="POST">
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Mot de passe" required>
@@ -16,9 +18,7 @@
         </form>
         <a href="/register">Pas encore de compte ? Créer un agent</a>
     </main>
-    <footer>
-        <h2>Documentation de l'API</h2>
-        <p>Accédez à la liste des routes et fonctionnalités <a href="/docs">ici</a>.</p>
-    </footer>
+
+    <%- include('partials/footer') %>
 </body>
 </html>

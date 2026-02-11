@@ -1,27 +1,44 @@
 const Reservation = require('../models/Reservation');
 
-exports.createReservation = async (req, res) => {
+/**
+ * @description Récupère les détails d'un catway spécifique et ses réservations.
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Promise<void>}
+ */
+
+
+exports.getAllReservations = async (req, res) => {
     try {
-        const { catwayNumber } = req.params; // On récupère le numéro du catway depuis l'URL
-        const { clientName, boatName, startDate, endDate } = req.body; // On récupère les autres infos depuis le formulaire
-        if (startDate >= endDate) {
-            return res.status(400).send("La date de début doit être antérieure à la date de fin.");
-        } else {
-            const newReservation = new Reservation({
-                catwayNumber,
-                clientName,
-                boatName,
-                startDate,
-                endDate
-            });
+        // On récupère toutes les réservations en base
+        const reservations = await Reservation.find();
 
-            await newReservation.save();
-
-            console.log("Réservation créée avec succès !");
-            res.redirect(`/catways/${catwayNumber}`); // Redirection vers le détail du catway après la création de la réservation
-        }
+        res.render('reservations', {
+            reservations: reservations,
+            title: "Liste Globale des Réservations"
+        });
     } catch (error) {
-        res.status(500).send("Erreur lors de la réservation : " + error.message);
+        res.status(500).send("Erreur lors de la récupération des réservations : " + error.message);
+    }
+};
+
+exports.addReservation = async (req, res) => {
+    try {
+        const { catwayNumber, clientName, boatName, startDate, endDate } = req.body;
+        
+        const newResa = new Reservation({
+            catwayNumber,
+            clientName,
+            boatName,
+            startDate,
+            endDate
+        });
+
+        await newResa.save();
+        
+        res.redirect('/reservations'); 
+    } catch (error) {
+        res.status(500).send("Erreur : " + error.message);
     }
 };
 

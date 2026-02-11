@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/style/base.css">
+    <title>Tableau de bord des utilisateurs</title>
+</head>
+<body>
+    <%- include('partials/header') %>
+
+    <main>
+        <div class="admin-actions">
+            <h2>Gestion des accès</h2>
+            <a href="/users/add" class="button">Créer un nouvel utilisateur</a>
+        </div>
+        <div>
+            <h2>Les utilisateurs inscrits</h2>
+            <% if (typeof users !== 'undefined' && users.length > 0) { %>
+                <% users.forEach(user => { %>
+                    <p>
+                        <%= user.username %> - <%= user.email %>
+                        <a href="/users/delete/<%= user._id %>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet agent ?')" class="delete-user">[Supprimer]</a>
+                    </p>
+                <% }) %>
+            <% } else { %>
+                <p>Aucun agent enregistré.</p>
+            <% } %> 
+        </div>
+
+        <a href="/dashboard" class="btn-secondary">Retour au dashboard</a>
+    </main>
+
+    <%- include('partials/footer') %>
+</body>
+</html>

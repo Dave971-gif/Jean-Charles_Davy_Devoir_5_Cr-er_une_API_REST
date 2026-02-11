@@ -1,0 +1,13 @@
+<header class="main-header">
+    <div class="user-auth-info">
+        <% if (user) { %>
+            <p>Connecté en tant que : <strong><%= user.username %></strong> (<%= user.email %>)</p>
+            <a href="/logout" class="logout-btn">Se déconnecter</a>
+        <% } else { %>
+            <p>Non connecté</p>
+        <% } %>
+    </div>
+    <div class="date-info">
+        <p>Date : <%= new Date().toLocaleDateString() %></p>
+    </div>
+</header>

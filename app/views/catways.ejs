@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/style/base.css">
+    <title>Tableau de bord des catways</title>
+</head>
+<body>
+    <%- include('partials/header') %>
+
+    <main>
+        <caption>Gestion des Catways</caption>
+        <table>
+            <thead>
+                <tr>
+                    <th>Numéro</th>
+                    <th>Type</th>
+                    <th>État</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% catways.forEach(catway => { %>
+                    <tr>
+                        <td><%= catway.catwayNumber %></td>
+                        <td><%= catway.catwayType %></td>
+                        <td><%= catway.catwayState %></td>
+                        <td><a href="/catways/<%= catway.catwayNumber %>">Détails</a></td>
+                        <td><a href="/catways/<%= catway.catwayNumber %>/edit">[Modifier les détails du catway]</a></td>
+                        <td><a href="/catways/<%= catway.catwayNumber %>/delete" onclick="return confirm('Supprimer le catway n° <%= catway.catwayNumber %> ?')">[Supprimer le catway]</a></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td><a href="/catways/add" class="button">[Ajouter un nouveau catway]</a></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <a href="/dashboard" class="btn-secondary">Retour au dashboard</a>
+    </main>
+
+    <%- include('partials/footer') %>
+</body>
+</html>
