@@ -21,6 +21,8 @@ header, footer {
     color: white;
     padding: 15px 20px;
     text-align: center;
+    font-size: 1rem;
+    font-weight: bold;
 }
 
 main {
