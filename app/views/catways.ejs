@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/public/style/base.css">
+    <link rel="stylesheet" href="/style/base.css">
     <title>Tableau de bord des catways</title>
 </head>
 <body>
     <%- include('partials/header') %>
 
     <main>
-        <caption>Gestion des Catways</caption>
+        <h1>Gestion des Catways</h1>
         <table>
+            <caption>Liste des catways disponibles</caption>
             <thead>
                 <tr>
                     <th>Numéro</th>
@@ -27,14 +28,18 @@
                         <td><%= catway.catwayType %></td>
                         <td><%= catway.catwayState %></td>
                         <td><a href="/catways/<%= catway.catwayNumber %>">Détails</a></td>
-                        <td><a href="/catways/<%= catway.catwayNumber %>/edit">[Modifier les détails du catway]</a></td>
-                        <td><a href="/catways/<%= catway.catwayNumber %>/delete" onclick="return confirm('Supprimer le catway n° <%= catway.catwayNumber %> ?')">[Supprimer le catway]</a></td>
+                        <td><a href="/catways/<%= catway.catwayNumber %>/edit">Modifier les détails du catway</a></td>
+                        <td>
+                            <form action="/catways/<%= catway.catwayNumber %>?_method=DELETE" method="POST" style="display:inline;">
+                                <button type="submit" class="btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce catway ?');">Supprimer le catway</button>
+                            </form>
+                        </td>
                     </tr>
                 <% }) %>
             </tbody>
             <tfoot>
                 <tr>
-                    <td><a href="/catways/add" class="button">[Ajouter un nouveau catway]</a></td>
+                    <td><a href="/catways/add" class="btn-add">Ajouter un nouveau catway</a></td>
                 </tr>
             </tfoot>
         </table>

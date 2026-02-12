@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style/base.css">
+    <title>Détails d'un utilisateur</title>
+</head>
+<body>
+    <%- include('../partials/header') %>
+
+    <main>
+        <h1>Détails de l'utilisateur</h1>
+        <table class="table">
+            <caption>Informations de l'utilisateur</caption>
+            <thead>
+                <th>Nom de l'utilisateur</th>
+                <th>Email</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><%= user.username %></td>
+                    <td><%= user.email %></td>
+                    <td><a href="/users/<%= user._id %>/edit">Modifier</a></td>
+                    <td>
+                        <form action="/users/<%= user._id %>?_method=DELETE" method="POST">
+                            <button type="submit" class="btn-delete" onclick="return confirm('Supprimer cet agent ?')">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2">
+                        <a href="/users" class="btn btn-secondary">Retour à la liste des utilisateurs</a>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+        <a href="/dashboard" class="btn btn-primary">Retour au dashboard</a>
+    </main>
+
+    <%- include('../partials/footer') %>
+</body>
+</html>

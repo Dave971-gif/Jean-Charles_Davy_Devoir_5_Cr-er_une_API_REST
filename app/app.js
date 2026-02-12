@@ -4,7 +4,6 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 
-
 const catwayRoutes = require('./routes/catwayRoutes');
 const userRoutes = require('./routes/userRoutes');
 const reservationRoutes = require('./routes/reservationRoutes');
@@ -15,6 +14,10 @@ const jwt = require('jsonwebtoken');
 const auth = require('./middleware/auth');
 
 const app = express();
+const methodOverride = require('method-override');
+
+// --- USING METHOD PUT ---
+app.use(methodOverride('_method'));
 
 // --- CONNEXION MONGODB ---
 // On utilise une fonction asynchrone pour rester cohérent avec ton style
@@ -57,6 +60,35 @@ app.use(async (req, res, next) => {
     }
     next();
 });
+
+// --- CONFIGURATION SWAGGER ---
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'API de Gestion de Catways',
+            version: '1.0.0',
+            description: 'API REST pour gérer les catways et les réservations',
+        },
+        servers: [
+            {
+                url: 'http://localhost:3000',
+                description: 'Serveur local',
+            },
+        ],  
+    },
+    // On dit à Swagger de lire les fichiers dans le dossier routes
+    apis: ['./routes/*.js'], 
+};
+
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
+
+// UNE SEULE ROUTE SWAGGER
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 
 // --- ROUTES PUBLIQUES ---
 app.get('/', (req, res) => 

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style/base.css">
     <title>Document</title>
 </head>
 <body>
@@ -34,6 +35,7 @@
 
         <h2>Réservations en cours</h2>
         <table class="table">
+            <caption>Liste des réservations en cours</caption>
             <thead>
                 <tr>
                     <th>Catway</th>
@@ -52,7 +54,9 @@
                             <td><%= resa.boatName %></td>
                             <td><%= new Date(resa.startDate).toLocaleDateString() %> - <%= new Date(resa.endDate).toLocaleDateString() %></td>
                             <td>
-                                <a href="/reservations/delete/<%= resa._id %>" class="btn-danger" onclick="return confirm('Supprimer ?')">Supprimer</a>
+                                <form action="/catways/<%= resa.catwayNumber %>/reservations/<%= resa._id %>?_method=DELETE" method="POST">
+                                    <button type="submit" class="btn-delete" onclick="return confirm('Supprimer cette réservation ?')">Annuler la réservation</button>
+                                </form>                            
                             </td>
                         </tr>
                     <% }) %>

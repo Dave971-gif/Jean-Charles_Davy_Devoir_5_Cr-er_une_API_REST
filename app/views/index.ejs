@@ -3,14 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/public/style/base.css">
+    <link rel="stylesheet" href="/style/base.css">
+    <link rel="stylesheet" href="/style/index.css">
     <title>Connexion - Capitainerie</title>
 </head>
 <body>
     <%- include('partials/header') %>
 
     <main>
-        <h1>Connexion à l'espace Capitainerie</h1>
+        <div class="info">
+            <h1>Informations de l'application</h1>
+            <p>Cette application permet de gérer les catways et les réservations d'une capitainerie maritime, mais également de gérer les agents de l'équipe de gestion.</p>
+        </div>
+        <h2>Connexion à l'espace Capitainerie</h2>
         <form action="/login" method="POST">
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Mot de passe" required>

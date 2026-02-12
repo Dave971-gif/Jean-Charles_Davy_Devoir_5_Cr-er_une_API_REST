@@ -4,9 +4,10 @@ const Reservation = require('../models/Reservation');
 
 /**
  * @description Récupère les détails d'un catway spécifique et ses réservations.
- * @param {Object} req - Express request object.
+ * @route GET /catways/:id
+ * @param {Object} req - Express request object (contenant l'id dans params).
  * @param {Object} res - Express response object.
- * @returns {Promise<void>}
+ * @returns {Promise<void>} - Rend la vue 'catways/catwayDetail'.
  */
 
 // On affiche tous les catways et tous les utilisateurs dans le catway et user ejs
@@ -51,7 +52,7 @@ exports.getCatwayById = async (req, res) => {
 //On affiche le formulaire de modification d'un catway
 exports.renderEditCatwayForm = async (req, res) => {
     try {
-        const catwayNumber = parseInt(req.params.catwayNumber);
+        const catwayNumber = parseInt(req.params.id);
         const catway = await Catway.findOne({ catwayNumber: catwayNumber });
 
         if (!catway) {
@@ -66,7 +67,7 @@ exports.renderEditCatwayForm = async (req, res) => {
 //On traite la modification d'un catway
 exports.updateCatway = async (req, res) => {
     try {
-        const catwayNumber = parseInt(req.params.catwayNumber);
+        const catwayNumber = parseInt(req.params.id);
         const { catwayType, catwayState } = req.body;
         const catway = await Catway.findOneAndUpdate(
             { catwayNumber: catwayNumber },
@@ -86,7 +87,7 @@ exports.updateCatway = async (req, res) => {
 //On supprime un catway
 exports.deleteCatway = async (req, res) => {
     try {
-        const catwayNumber = parseInt(req.params.catwayNumber);
+        const catwayNumber = parseInt(req.params.id);
         const catway = await Catway.findOneAndDelete({ catwayNumber: catwayNumber });
         if (!catway) {
             return res.status(404).send("Catway non trouvé");

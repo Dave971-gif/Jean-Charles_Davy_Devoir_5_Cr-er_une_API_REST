@@ -1,24 +1,22 @@
-/* Grille pour aligner les cartes */
 .dashboard-grid {
     display: flex;
     gap: 20px;
-    flex-wrap: wrap; /* Pour que ça revienne à la ligne sur petit écran */
+    flex-wrap: wrap; 
     margin-top: 20px;
 }
 
-/* Style de chaque carte */
+
 .card {
     flex: 1;
-    min-width: 250px; /* Largeur minimum pour ne pas qu'elles soient trop fines */
+    min-width: 250px; 
     background: white;
     padding: 20px;
     border-radius: 10px;
     border: 1px solid #e0e0e0;
-    transition: transform 0.2s, box-shadow 0.2s; /* Petit effet au survol */
+    transition: transform 0.2s, box-shadow 0.2s; 
     text-align: center;
 }
 
-/* Effet d'élévation quand on passe la souris dessus */
 .card:hover {
     transform: translateY(-5px);
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
@@ -33,5 +31,5 @@
     font-size: 0.9rem;
     color: #666;
     margin-bottom: 20px;
-    min-height: 40px; /* Aligne les boutons si les textes n'ont pas la même longueur */
+    min-height: 40px; 
 }

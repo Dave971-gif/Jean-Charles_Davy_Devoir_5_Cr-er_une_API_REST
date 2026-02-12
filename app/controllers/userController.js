@@ -3,22 +3,25 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 
 /**
- * @description Récupère les détails d'un catway spécifique et ses réservations.
- * @param {Object} req - Express request object.
- * @param {Object} res - Express response object.
- * @returns {Promise<void>}
+ * @description Modifie les informations d'un utilisateur existant.
+ * @route POST /users/:id/edit
+ * @access Privé (Agent connecté)
+ * @param {Object} req - Contient l'ID dans params et les nouvelles infos dans body.
+ * @param {Object} res - Redirige vers la fiche détail de l'utilisateur.
  */
 
+
+// AFFICHAGE D'UN UTILISATEUR
 exports.getAllUsers = async (req, res) => {
     try {
         const users = await User.find().select('-password');
 
-        res.render('users', {
+        return res.render('users', {
             users: users,
             title: "Gestion des Utilisateurs"
         });
     } catch (error) {
-        res.status(500).send("Erreur lors de la récupération des utilisateurs : " + error.message);
+        return res.status(500).send("Erreur lors de la récupération des utilisateurs : " + error.message);
     }
 };
 
@@ -36,11 +39,10 @@ exports.signup = async (req, res, next) => {
 
         // On attend que la sauvegarde soit finie
         await user.save();
-        res.redirect('/dashboard');
-        res.status(201).json({ message: 'Utilisateur créé !' });
+        return res.redirect('/users');
         
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: error.message });
     }
 };
 
@@ -71,10 +73,10 @@ exports.login = async (req, res) => {
         res.cookie('token', token, { httpOnly: true, secure: false });
 
         // 5. On redirige vers le dashboard
-        res.redirect('/dashboard');
+        return res.redirect('/dashboard');
 
     } catch (error) {
-        res.status(500).send(error.message);
+        return res.status(500).send(error.message);
     }
 };
 
@@ -82,8 +84,61 @@ exports.login = async (req, res) => {
 exports.deleteUser = async (req, res) => {
     try {
         await User.findByIdAndDelete(req.params.id);
-        res.redirect('/dashboard'); 
+        return res.redirect('/users');
+
     } catch (error) {
-        res.status(500).send("Erreur");
+        return res.status(500).send("Erreur lors de la suppression de l'utilisateur : " + error.message);
     }
 };
+
+// DETAIL D'UN UTILISATEUR
+exports.getUserDetail = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id).select('-password');
+        if (!user) {
+            return res.status(404).send("Utilisateur non trouvé");
+        }
+        return res.render('users/user-detail', {
+            user: user,
+            title: "Détails de l'Utilisateur"
+        });
+    } catch (error) {
+        return res.status(500).send("Erreur lors de la récupération des détails de l'utilisateur : " + error.message);
+    }
+};
+
+// AFFICHAGE DU FORMULAIRE DE MODIFICATION D'UN UTILISATEUR
+exports.editUserForm = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id).select('-password');
+        if (!user) {
+            return res.status(404).send("Utilisateur non trouvé");
+        }
+
+        return res.render('users/user-edit', {
+            user: user,
+            title: "Modifier l'Utilisateur"
+        });
+    } catch (error) {
+        return res.status(500).send("Erreur lors de l'affichage du formulaire de modification : " + error.message);
+    }
+};
+
+// MODIFICATION D'UN UTILISATEUR
+exports.editUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user) {
+            return res.status(404).send("Utilisateur non trouvé");
+        } 
+        user.username = req.body.username || user.username;
+        user.email = req.body.email || user.email;
+        
+        await user.save();
+        return res.redirect('/users/' + user._id + '/detail');
+
+    } catch (error) {
+        return res.status(500).send("Erreur lors de la modification de l'utilisateur : " + error.message);
+    }
+};
+

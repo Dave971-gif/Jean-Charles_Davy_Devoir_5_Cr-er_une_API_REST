@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/public/style/base.css">
+    <link rel="stylesheet" href="/style/base.css">
     <title>Détails du Catway <%= catway.catwayNumber %></title>
 </head>
 <body>
@@ -17,8 +17,9 @@
         </ul>
         
         <a href="/catways/<%= catway.catwayNumber %>/edit">[Modifier les détails du catway]</a>
-        <a href="/catways/<%= catway.catwayNumber %>/delete" onclick="return confirm('Supprimer le catway n° <%= catway.catwayNumber %> ?')">[Supprimer le catway]</a>
-
+        <form action="/catways/<%= catway.catwayNumber %>?_method=DELETE" method="POST" style="display:inline;">
+            <button type="submit" class="btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce catway ?');">Supprimer le catway</button>
+        </form>
         <a href="/catways">Retour au tableau de bord des catways</a>
     </main>
     

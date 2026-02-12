@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/public/style/base.css">
+    <link rel="stylesheet" href="/style/base.css">
+    <link rel="stylesheet" href="/style/user.css">
     <title>Tableau de bord des utilisateurs</title>
 </head>
 <body>
     <%- include('partials/header') %>
 
     <main>
-        <div class="admin-actions">
+        <div>
             <h2>Gestion des accès</h2>
             <a href="/users/add" class="button">Créer un nouvel utilisateur</a>
         </div>
@@ -18,9 +19,13 @@
             <h2>Les utilisateurs inscrits</h2>
             <% if (typeof users !== 'undefined' && users.length > 0) { %>
                 <% users.forEach(user => { %>
-                    <p>
+                    <p class="user-list">
                         <%= user.username %> - <%= user.email %>
-                        <a href="/users/delete/<%= user._id %>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet agent ?')" class="delete-user">[Supprimer]</a>
+                        <a href="/users/<%= user._id %>/detail">Détails</a>
+                        <a href="/users/<%= user._id %>/edit">Modifier</a>
+                        <form action="/users/<%= user._id %>?_method=DELETE" method="POST" style="display:inline;">
+                            <button type="submit" class="btn-delete" onclick="return confirm('Supprimer cet agent ?')">Supprimer</button>
+                        </form>
                     </p>
                 <% }) %>
             <% } else { %>
@@ -28,7 +33,7 @@
             <% } %> 
         </div>
 
-        <a href="/dashboard" class="btn-secondary">Retour au dashboard</a>
+        <a href="/dashboard" class="btn-secondary">Retour au tableau de bord</a>
     </main>
 
     <%- include('partials/footer') %>

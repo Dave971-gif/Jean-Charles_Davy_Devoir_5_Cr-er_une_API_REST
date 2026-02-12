@@ -4,8 +4,12 @@ const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const userController = require('../controllers/userController');
 
-// Route pour lister tous les utilisateurs
+// Route pour lister tous les utilisateurs, ses détails, le modifier et le supprimer
 router.get('/', userController.getAllUsers);
+router.delete('/:id', userController.deleteUser);
+router.get('/:id/detail', userController.getUserDetail);
+router.get('/:id/edit', userController.editUserForm);
+router.put('/:id', userController.editUser);
 
 // Route pour afficher le formulaire de création (Vue dans le dossier users)
 router.get('/add', (req, res) => {
@@ -41,6 +45,5 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.get('/delete/:id', userController.deleteUser);
 
 module.exports = router;
